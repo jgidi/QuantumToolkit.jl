@@ -2,3 +2,6 @@ name = "QuantumToolkit"
 uuid = "32e8ab88-263e-4e37-9328-2525dc559f8f"
 authors = ["Jorge Gidi <jorgegidi@gmail.com>"]
 version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
