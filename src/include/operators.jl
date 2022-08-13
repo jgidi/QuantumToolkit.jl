@@ -12,7 +12,7 @@ end
 """
     random_density(d::Integer)
 
-Returns a Haar distributed random density matrix with side size `d`.
+Returns a random density matrix with side size `d` from the Hilbert-Schmidt metric.
 """
 function random_density(d::Integer)
     M = randn(Complex{Float64}, d, d)
@@ -24,7 +24,7 @@ end
 """
     projector(ket::Vector)
 
-Returns the ket-bra formed from the input state ket.
+Returns the ket-bra formed from the input state `ket`.
 """
 projector(ket::Vector) = ket * ket'
 
