@@ -8,4 +8,6 @@ include("include/bases.jl")
 include("include/states.jl")
 include("include/operators.jl")
 include("include/distances.jl")
+include("include/measurements.jl")
+
 end # module
