@@ -1,4 +1,4 @@
-export logrange, bound, simulate_experiment
+export logrange, bound, ptrace, simulate_experiment
 
 """
     logrange(start, stop, N)
