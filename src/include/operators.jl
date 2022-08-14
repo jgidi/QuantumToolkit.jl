@@ -21,6 +21,24 @@ function random_density(d::Integer)
     return M/tr(M)
 end
 
+
+# TODO Compare distriution with standard implementation
+#
+# According to Alsing et. al. (2022)
+# "The distribution of density matrices at fixed purity for arbitrary dimensions"
+function _random_density(d::Integer)
+    # Two Haar-distributed unitary matrices
+    U = random_unitary(d)
+    V = random_unitary(d)
+
+    # Sample the eigenvalues from a column of V and build the
+    # diagonalized form of the density matrix
+    D = Diagonal( abs2.(V[:, 1]) )
+
+    # Use U to form ρ as a similarity transformation of D
+    return U * D * U'
+end
+
 """
     projector(ket::Vector)
 
