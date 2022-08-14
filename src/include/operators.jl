@@ -32,7 +32,7 @@ projector(ket::Vector) = ket * ket'
     purity(ρ::Matrix) = tr(ρ*ρ)
 Returns de purity, `tr(ρ^2)`, of the density matrix `ρ`.
 """
-purity(ρ::Matrix) = tr(ρ*ρ)
+purity(ρ::Matrix) = real(tr(ρ*ρ))
 
 issemiposdef(ρ::Matrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
 
