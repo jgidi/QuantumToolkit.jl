@@ -41,3 +41,14 @@ function simulate_experiment(values::Vector, Nshots=Inf)
 
     return simulated
 end
+
+"""
+    issquared(M::Matrix)
+
+Checks if the matrix `M` is squared.
+"""
+function issquared(M::Matrix)
+    N, M = size(M)
+
+    return N == M
+end
