@@ -1,4 +1,4 @@
-export logrange, bound, ptrace, simulate_experiment
+export squeeze, logrange, bound, ptrace, simulate_experiment
 
 """
     squeeze(A::AbstractArray)
