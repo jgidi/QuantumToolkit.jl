@@ -58,4 +58,9 @@ That is, if `ρ` is semi-positive definite and normalized to trace 1.
 """
 isstate(ρ::Matrix) = isapprox(tr(ρ), 1) && issemiposdef(ρ)
 
+"""
+    ispure(ρ::Matrix)
+
+Checks if `ρ` is pure. That is, if `tr(ρ^2)` is approximately 1.
+"""
 ispure(ρ::Matrix) = isapprox(purity(ρ), 1)
