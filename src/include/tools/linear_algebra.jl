@@ -1,4 +1,4 @@
-export ptrace
+export issemiposdef, ptrace
 
 """
     issquared(M::Matrix)
@@ -10,6 +10,9 @@ function issquared(M::Matrix)
 
     return N == M
 end
+
+
+issemiposdef(ρ::Matrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
 
 """
     ptrace(M::Matrix, subsystem_sizes, trace_over)

@@ -1,6 +1,6 @@
 export random_density
 export projector, purity
-export issemiposdef, isstate, ispure
+export isstate, ispure
 
 
 """
@@ -49,8 +49,6 @@ projector(ket::Vector) = ket * ket'
 Returns de purity, `tr(ρ^2)`, of the density matrix `ρ`.
 """
 purity(ρ::Matrix) = real(tr(ρ*ρ))
-
-issemiposdef(ρ::Matrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
 
 """
     isstate(ρ::Matrix)
