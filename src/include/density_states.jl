@@ -45,6 +45,7 @@ projector(ket::Vector) = ket * ket'
 
 """
     purity(ρ::Matrix) = tr(ρ*ρ)
+
 Returns de purity, `tr(ρ^2)`, of the density matrix `ρ`.
 """
 purity(ρ::Matrix) = real(tr(ρ*ρ))
@@ -55,7 +56,7 @@ issemiposdef(ρ::Matrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
     isstate(ρ::Matrix)
 
 Checks if `ρ` is a density matrix.
-That is, if `ρ` is semi-positive definite and is normalized to trace 1.
+That is, if `ρ` is semi-positive definite and normalized to trace 1.
 """
 isstate(ρ::Matrix) = isapprox(tr(ρ), 1) && issemiposdef(ρ)
 
