@@ -1,6 +1,50 @@
 export logrange, bound, ptrace, simulate_experiment
 
 """
+    squeeze(A::AbstractArray)
+
+Remove singleton (length 1) dimensions of `A` by reshaping.
+
+Notes
+=====
+
+* This function is not type-stable and may harm performance.
+  Don't use it within performance-critical parts of code.
+* The resulting array points to the same memory as `A`.
+
+Examples
+========
+
+```julia-repl
+julia> A = rand(1, 2, 1, 2, 1)
+1×2×1×2×1 Array{Float64, 5}:
+[:, :, 1, 1, 1] =
+ 0.608853  0.240589
+
+[:, :, 1, 2, 1] =
+ 0.906431  0.109752
+
+julia> B = squeeze(A) # Remove singleton dimensions
+2×2 Matrix{Float64}:
+ 0.608853  0.906431
+ 0.240589  0.109752
+
+julia> B[1, 1] = 0.0 # Changing B also changes A
+0.0
+
+julia> A
+1×2×1×2×1 Array{Float64, 5}:
+[:, :, 1, 1, 1] =
+ 0.0  0.240589
+
+[:, :, 1, 2, 1] =
+ 0.906431  0.109752
+```
+
+"""
+squeeze(A::AbstractArray) = reshape(A, filter(!=(1), size(A)))
+
+"""
     logrange(start, stop, N)
 Returns an array of `N` logarithmically spaced points from `start` to `stop`.
 """
@@ -51,7 +95,7 @@ julia> ptrace(A, (2,2), (1,2)) # Trace over both subsystems
  34
 ```
 """
-function ptrace(M::Matrix, subsystem_sizes, trace_over)
+function ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
     @assert prod(subsystem_sizes)==size(M, 1) "Matrix does not comply with the system sizes"
     @assert issquared(M) "Matrix is not squared"
 
