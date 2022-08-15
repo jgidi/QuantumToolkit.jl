@@ -1,4 +1,4 @@
-export squeeze, logrange, bound, simulate_experiment
+export squeeze, logrange, bound
 
 """
     squeeze(A::AbstractArray)
@@ -60,28 +60,4 @@ function bound(value, limits = (zero(value), one(value)))
   mini, maxi = minmax(limits...)
 
   return max(min(value, maxi), mini)
-end
-
-function simulate_experiment(value::Number, Nshots=Inf)
-
-    if isinf(Nshots)
-        simulated = value
-    else
-        distribution = Binomial(Nshots, value)
-        simulated = rand(distribution) / Nshots
-    end
-
-    return simulated
-end
-
-function simulate_experiment(values::Vector, Nshots=Inf)
-
-    if isinf(Nshots)
-        simulated = values
-    else
-        distribution = Multinomial(Nshots, values)
-        simulated = rand(distribution) / Nshots
-    end
-
-    return simulated
 end
