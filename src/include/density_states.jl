@@ -18,6 +18,27 @@ end
 # counts(purity) ~ purity^3 (w/rand)
 
 
+"""
+    random_density(d::Integer; purity)
+
+Returns a random density matrix with side size `d` and fixed purity.
+
+Notes
+=====
+* The purity for a matrix `ρ` is `LinearAlgebra.tr(ρ^2)`.
+* The keyword `purity` must fulfill `1/d <= purity <= 1`.
+"""
+function random_density(d; purity)
+
+    @assert d*purity>=1 "The purity must be greater than 1/d."
+
+    ket = random_ketstate(d)
+
+    s = sqrt((d*purity - 1)/(d - 1))
+
+    return s * ket*ket' + (1-s) * I(d) / d
+end
+
 # TODO Compare distriution with standard implementation
 # counts(purity) ~ 1 / sqrt(purity)
 #
