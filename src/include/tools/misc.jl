@@ -61,3 +61,16 @@ function bound(value, limits = (zero(value), one(value)))
 
   return max(min(value, maxi), mini)
 end
+
+
+# TODO Extend to mixed states
+function bloch_angles(ket)
+    @assert length(ket)==2
+
+    a, b = ket
+
+    theta = 2acos(abs(a))
+    phi = angle(b/a)
+
+    return theta, phi
+end
