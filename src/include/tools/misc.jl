@@ -63,9 +63,9 @@ function bound(value, limits = (zero(value), one(value)))
 end
 
 
-# TODO Extend to mixed states
-function bloch_angles(ket)
-    @assert length(ket)==2
+function bloch_angles(ket::Vector)
+    isstate(ket)   || throw("Input is not a valid physical state")
+    length(ket)==2 || throw("Bloch sphere is only defined for d=2")
 
     a, b = ket
 
