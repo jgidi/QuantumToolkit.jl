@@ -33,7 +33,7 @@ Notes
 """
 function random_density(d::Integer, purity)
 
-    all(@. d*purity>=1) ||
+    all(@. 1 <= d*purity <= d) ||
         throw("The purity must fulfill `1/d <= purity <= 1`.")
 
     if length(purity)>1
