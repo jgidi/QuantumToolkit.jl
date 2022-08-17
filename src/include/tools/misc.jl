@@ -61,3 +61,27 @@ function bound(value, limits = (zero(value), one(value)))
 
   return max(min(value, maxi), mini)
 end
+
+
+function bloch_angles(ket::Vector)
+    isstate(ket)   || throw("Input is not a valid physical state")
+    length(ket)==2 || throw("Bloch sphere is only defined for d=2")
+
+    a, b = ket
+
+    theta = 2acos(abs(a))
+    phi = angle(b/a)
+
+    return theta, phi
+end
+
+bloch_vector(ket::Vector) = bloch_vector(ket*ket')
+
+function bloch_vector(A::Matrix)
+    size(A, 1)==2 || throw("Bloch sphere is only defined for d=2")
+    isstate(A)    || throw("Input is not a valid physical state.")
+    mx, my = reim(2A[1, 2])
+    mz = real(A[1, 1] - A[2,2])
+
+    return (mx, my, mz)
+end

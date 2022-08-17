@@ -19,22 +19,33 @@ end
 
 
 """
-    random_density(d::Integer; purity)
+    random_density(d::Integer, purity)
 
-Returns a random density matrix with side size `d` and fixed purity.
+Returns a random density matrix with side size `d` and fixed purity, `purity`.
+
+You can also pass `purity` as a tuple `(mini, maxi)` for the generation
+of a mixed state with purity uniformly sampled from the interval `[mini, maxi]`.
 
 Notes
 =====
+* The purity must fulfill `1/d <= purity <= 1`.
 * The purity for a matrix `ρ` is `LinearAlgebra.tr(ρ^2)`.
-* The keyword `purity` must fulfill `1/d <= purity <= 1`.
 """
-function random_density(d; purity)
+function random_density(d::Integer, purity)
 
-    @assert d*purity>=1 "The purity must be greater than 1/d."
+    all(@. d*purity>=1) ||
+        throw("The purity must fulfill `1/d <= purity <= 1`.")
+
+    if length(purity)>1
+        mini, maxi = minmax(purity...)
+        p = (maxi-mini)*rand() + mini
+    else
+        p = purity
+    end
 
     ket = random_ketstate(d)
 
-    s = sqrt((d*purity - 1)/(d - 1))
+    s = sqrt((d*p - 1)/(d - 1))
 
     return s * ket*ket' + (1-s) * I(d) / d
 end
