@@ -19,14 +19,14 @@ end
 
 
 """
-    random_density(d::Integer; purity)
+    random_density(d::Integer, purity)
 
 Returns a random density matrix with side size `d` and fixed purity.
 
 Notes
 =====
+* The purity must fulfill `1/d <= purity <= 1`.
 * The purity for a matrix `ρ` is `LinearAlgebra.tr(ρ^2)`.
-* The keyword `purity` must fulfill `1/d <= purity <= 1`.
 """
 function random_density(d; purity)
 
