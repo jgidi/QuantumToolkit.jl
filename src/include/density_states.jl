@@ -29,8 +29,9 @@ Notes
 * The purity for a matrix `ρ` is `LinearAlgebra.tr(ρ^2)`.
 """
 function random_density(d; purity)
+    all(@. d*purity>=1) ||
+        throw("The purity must fulfill `1/d <= purity <= 1`.")
 
-    @assert d*purity>=1 "The purity must be greater than 1/d."
 
     ket = random_ketstate(d)
 
