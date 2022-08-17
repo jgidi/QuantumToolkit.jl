@@ -21,7 +21,7 @@ end
 """
     random_density(d::Integer, purity)
 
-Returns a random density matrix with side size `d` and fixed purity.
+Returns a random density matrix with side size `d` and fixed purity, `purity`.
 
 Notes
 =====
