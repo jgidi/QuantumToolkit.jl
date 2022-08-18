@@ -69,30 +69,30 @@ function _random_density(d::Integer)
 end
 
 """
-    projector(ket::Vector)
+    projector(ket::AbstractVector)
 
 Returns the ket-bra formed from the input state `ket`.
 """
-projector(ket::Vector) = ket * ket'
+projector(ket::AbstractVector) = ket * ket'
 
 """
-    purity(ρ::Matrix) = tr(ρ*ρ)
+    purity(ρ::AbstractMatrix) = tr(ρ*ρ)
 
 Returns de purity, `tr(ρ^2)`, of the density matrix `ρ`.
 """
-purity(ρ::Matrix) = real(tr(ρ*ρ))
+purity(ρ::AbstractMatrix) = real(tr(ρ*ρ))
 
 """
-    isstate(ρ::Matrix)
+    isstate(ρ::AbstractMatrix)
 
 Checks if `ρ` is a density matrix.
 That is, if `ρ` is semi-positive definite and normalized to trace 1.
 """
-isstate(ρ::Matrix) = isapprox(tr(ρ), 1) && issemiposdef(ρ)
+isstate(ρ::AbstractMatrix) = isapprox(tr(ρ), 1) && issemiposdef(ρ)
 
 """
-    ispure(ρ::Matrix)
+    ispure(ρ::AbstractMatrix)
 
 Checks if `ρ` is pure. That is, if `tr(ρ^2)` is approximately 1.
 """
-ispure(ρ::Matrix) = isapprox(purity(ρ), 1)
+ispure(ρ::AbstractMatrix) = isapprox(purity(ρ), 1)

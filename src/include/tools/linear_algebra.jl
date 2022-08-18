@@ -1,21 +1,21 @@
 export issemiposdef, ptrace
 
 """
-    issquared(M::Matrix)
+    issquared(M::AbstractMatrix)
 
 Checks if the matrix `M` is squared.
 """
-function issquared(M::Matrix)
+function issquared(M::AbstractMatrix)
     N, M = size(M)
 
     return N == M
 end
 
 
-issemiposdef(ρ::Matrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
+issemiposdef(ρ::AbstractMatrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
 
 """
-    ptrace(M::Matrix, subsystem_sizes, trace_over)
+    ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
 
 Returns the partial trace of the matrix `M` over the subsystem(s)
 `trace_over`, where the size of all of the subsystems is specified

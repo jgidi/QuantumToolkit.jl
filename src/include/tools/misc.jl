@@ -63,7 +63,7 @@ function bound(value, limits = (zero(value), one(value)))
 end
 
 
-function bloch_angles(ket::Vector)
+function bloch_angles(ket::AbstractVector)
     isstate(ket)   || throw("Input is not a valid physical state")
     length(ket)==2 || throw("Bloch sphere is only defined for d=2")
 
@@ -75,11 +75,13 @@ function bloch_angles(ket::Vector)
     return theta, phi
 end
 
-bloch_vector(ket::Vector) = bloch_vector(ket*ket')
+export bloch_vector, bloch_angles
 
-function bloch_vector(A::Matrix)
+bloch_vector(ket::AbstractVector) = bloch_vector(ket*ket')
+
+function bloch_vector(A::AbstractMatrix)
     size(A, 1)==2 || throw("Bloch sphere is only defined for d=2")
-    isstate(A)    || throw("Input is not a valid physical state.")
+    # isstate(A)    || throw("Input is not a valid physical state.")
     mx, my = reim(2A[1, 2])
     mz = real(A[1, 1] - A[2,2])
 

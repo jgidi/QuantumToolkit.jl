@@ -2,11 +2,11 @@ export fidelity
 export cross_entropy, cross_entropy_experimental
 
 """
-    fidelity(s1::Vector, s2::Vector)
+    fidelity(s1::AbstractVector, s2::AbstractVector)
 
 Returns the fidelity for two states `s1` and `s2`.
 """
-function fidelity(s1::Vector, s2::Vector)
+function fidelity(s1::AbstractVector, s2::AbstractVector)
     prod2  = abs2( s1's2 )
     norms2 =  sum(abs2, s1) * sum(abs2, s2)
 
@@ -14,11 +14,11 @@ function fidelity(s1::Vector, s2::Vector)
 end
 
 """
-    fidelity(ρ::Matrix, σ::Matrix)
+    fidelity(ρ::AbstractMatrix, σ::AbstractMatrix)
 
 Returns the fidelity for two matrices `ρ` and `σ`.
 """
-function fidelity(ρ::Matrix, σ::Matrix)
+function fidelity(ρ::AbstractMatrix, σ::AbstractMatrix)
     sqrtρ = sqrt(ρ)
 
     return abs2( tr(sqrt(sqrtρ * σ * sqrtρ)) )
@@ -26,13 +26,13 @@ end
 
 
 """
-    cross_entropy(ρ::Matrix, σ::Matrix)
+    cross_entropy(ρ::AbstractMatrix, σ::AbstractMatrix)
 
 Returns the cross entropy `tr(ρ log(σ))` from two matrices `ρ` and `σ`.
 """
-cross_entropy(ρ::Matrix, σ::Matrix) = -tr(ρ * log(σ))
+cross_entropy(ρ::AbstractMatrix, σ::AbstractMatrix) = -tr(ρ * log(σ))
 
-function cross_entropy_experimental(ρ::Matrix, σ::Matrix;
+function cross_entropy_experimental(ρ::AbstractMatrix, σ::AbstractMatrix;
                                     Nshots=Inf, basis_perturbation=0.0)
     vals, vecs = eigen(σ)
 
