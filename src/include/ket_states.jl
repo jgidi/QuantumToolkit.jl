@@ -13,8 +13,8 @@ function random_ketstate(d::Integer)
 end
 
 """
-    isstate(ket::Vector)
+    isstate(ket::AbstractVector)
 
 Checks if `ket` is normalized to probability `1`.
 """
-isstate(ket::Vector) = isapprox(norm(ket), 1)
+isstate(ket::AbstractVector) = isapprox(norm(ket), 1)
