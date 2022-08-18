@@ -85,6 +85,7 @@ projector(ket::AbstractVector) = ket * ket'
 Returns de purity, `tr(ρ^2)`, of the density matrix `ρ`.
 """
 purity(ρ::AbstractMatrix) = real(tr(ρ*ρ))
+purity(ρ::Hermitian) = sum(abs2, ρ)
 
 """
     isstate(ρ::AbstractMatrix)
