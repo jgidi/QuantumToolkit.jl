@@ -11,8 +11,9 @@ Returns a random density matrix with side size `d` from the Hilbert-Schmidt metr
 function random_density(d::Integer)
     M = randn(Complex{Float64}, d, d)
     M = M*M'
+    M /= tr(M)
 
-    return M/tr(M)
+    return Hermitian(M)
 end
 # counts(purity) ~ sqrt(purity) (w/randn)
 # counts(purity) ~ purity^3 (w/rand)
@@ -45,14 +46,15 @@ function random_density(d::Integer, purity)
 
     ket = random_ketstate(d)
 
+    # Mixing parameter
     s = sqrt((d*p - 1)/(d - 1))
 
-    return s * ket*ket' + (1-s) * I(d) / d
+    # Compose state
+    state = s * ket*ket' + (1-s) * I(d) / d
+
+    return Hermitian(state)
 end
 
-# TODO Compare distriution with standard implementation
-# counts(purity) ~ 1 / sqrt(purity)
-#
 # According to Alsing et. al. (2022)
 # "The distribution of density matrices at fixed purity for arbitrary dimensions"
 function _random_density(d::Integer)
@@ -65,7 +67,9 @@ function _random_density(d::Integer)
     D = Diagonal( abs2.(V[:, 1]) )
 
     # Use U to form ρ as a similarity transformation of D
-    return U * D * U'
+    state = U * D * U'
+
+    return Hermitian(state)
 end
 
 """
@@ -76,7 +80,7 @@ Returns the ket-bra formed from the input state `ket`.
 projector(ket::AbstractVector) = ket * ket'
 
 """
-    purity(ρ::AbstractMatrix) = tr(ρ*ρ)
+    purity(ρ::AbstractMatrix)
 
 Returns de purity, `tr(ρ^2)`, of the density matrix `ρ`.
 """
