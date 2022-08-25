@@ -13,7 +13,7 @@ function perturb_basis(basis, amplitude)
     N = size(basis, 1)
     perturbed = similar(basis)
     for (i, vec) in enumerate(eachcol(basis))
-        perturbed[:, i] = vec + amplitude * random_state(N)
+        perturbed[:, i] = vec + amplitude * random_ketstate(N)
     end
 
     return orthonormalize(perturbed)
