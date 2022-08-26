@@ -1,4 +1,4 @@
-export issemiposdef, ptrace
+export nearest_density, nearest_posdef, issemiposdef, ptrace
 
 """
     issquared(M::AbstractMatrix)
@@ -11,8 +11,40 @@ function issquared(M::AbstractMatrix)
     return N == M
 end
 
-
 issemiposdef(ρ::AbstractMatrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
+
+"""
+    nearest_posdef(A::AbstractMatrix; tol=eps())
+
+Find the nearest positive-definite matrix to `A` in the Frobenius norm
+according to [1].
+
+References
+==========
+[1] : N.J. Higham, "Computing a nearest symmetric positive semidefinite matrix" (1988):
+      https://doi.org/10.1016/0024-3795(88)90223-6
+"""
+function nearest_posdef(A::AbstractMatrix; tol=eps())
+    # Take Hermitian part
+    B = 0.5(A + A')
+
+    # Spectral decomposition
+    vals, vecs = eigen(Hermitian(B))
+
+    # Patch negative eigenvalues
+    vals[@. vals < tol] .= tol
+
+    # Re-compose patched matrix
+    B = vecs * Diagonal(vals) * vecs'
+
+    return Hermitian(B)
+end
+
+function nearest_density(A::AbstractMatrix; tol=eps())
+    B = nearest_posdef(A, tol=tol)
+
+    return B/tr(B)
+end
 
 """
     ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
