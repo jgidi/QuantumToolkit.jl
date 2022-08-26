@@ -126,24 +126,23 @@ function make_fg!(A, f, eigenvecs)
         p = similar(f)
         trA2 = sum(abs2, A)
         if compute_G
-            S = zeros(ComplexF64, size(A))
+            grad = sum(f) * A
         end
         for (i, gm) in enumerate(eigenvecs)
             for (j, vec) in enumerate(eachcol(gm))
                 Avec = A*vec
                 p[j, i] = sum(abs2, Avec) / trA2
+
                 if compute_G
-                    S += (f[j, i]/p[j, i]) * Avec*vec'
+                    # Conjugate gradient with respect to complex matrix A
+                    grad -= (f[j, i]/p[j, i]) * Avec*vec'
                 end
             end
         end
 
         if compute_G
-            # Conjugate gradient with respect to complex matrix A
-            grad = - (S - A*sum(f)) / trA2^2
-
             # Return gradient as real vec
-            G .= to_real_vec(grad)
+            G .= to_real_vec(grad / trA2^2)
         end
         if compute_F
             # Value does not need conversion
