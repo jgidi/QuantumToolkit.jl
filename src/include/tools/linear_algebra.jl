@@ -9,7 +9,7 @@ Notes
 =====
 * `trn(A) = (d*tr(A) - 1)/(d - 1)` where `d = size(A, 1)`.
 """
-function trn(A::AbstractMatrx)
+function trn(A::AbstractMatrix)
     d = size(A, 1)
 
     return (d*tr(A) - 1)/(d - 1)
