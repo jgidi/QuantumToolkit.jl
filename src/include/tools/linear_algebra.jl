@@ -1,4 +1,20 @@
-export issemiposdef, ptrace
+export trn, issemiposdef, ptrace
+
+"""
+    trn(A::AbstractMatrx)
+
+Returns the trace of `A` normalized to the interval `[0, 1]`.
+
+Notes
+=====
+* `trn(A) = (d*tr(A) - 1)/(d - 1)` where `d = size(A, 1)`.
+"""
+function trn(A::AbstractMatrx)
+    d = size(A, 1)
+
+    return (d*tr(A) - 1)/(d - 1)
+end
+
 
 """
     issquared(M::AbstractMatrix)
