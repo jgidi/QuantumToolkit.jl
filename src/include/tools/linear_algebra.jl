@@ -1,4 +1,4 @@
-export trn, issemiposdef, ptrace
+export trn, issemiposdef, nearest_posdef, nearest_density, ptrace
 
 """
     trn(A::AbstractMatrx)
