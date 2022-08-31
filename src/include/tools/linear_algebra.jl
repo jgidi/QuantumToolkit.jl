@@ -30,6 +30,28 @@ end
 
 issemiposdef(ρ::AbstractMatrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
 
+
+function nearest_density(A::AbstractMatrix; tol=eps())
+    B = nearest_posdef(A; tol=tol)
+
+    return B / tr(B)
+
+function nearest_posdef(A::AbstractMatrix; tol=eps())
+    # Take Hermitian part of B
+    B = 0.5(A + A')
+
+    vals, vecs = eigen(Hermitian(B))
+
+    # Patch negative eigenvalues
+    vals = max.(vals, tol)
+
+    # Re-compose patched matrix
+    B = vecs * Diagonal(vals) * vecs'
+
+    # Positive definite is a subset of Hermitian matrices
+    return Hermitian(B)
+end
+
 """
     ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
 
