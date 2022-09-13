@@ -1,4 +1,20 @@
-export issemiposdef, ptrace
+export trn, issemiposdef, nearest_posdef, nearest_density, ptrace
+
+"""
+    trn(A::AbstractMatrx)
+
+Returns the trace of `A` normalized to the interval `[0, 1]`.
+
+Notes
+=====
+* `trn(A) = (d*tr(A) - 1)/(d - 1)` where `d = size(A, 1)`.
+"""
+function trn(A::AbstractMatrix)
+    d = size(A, 1)
+
+    return (d*tr(A) - 1)/(d - 1)
+end
+
 
 """
     issquared(M::AbstractMatrix)
@@ -13,6 +29,49 @@ end
 
 
 issemiposdef(ρ::AbstractMatrix, tol=eps()) = isposdef(ρ + tol*I(size(ρ, 1)))
+
+
+"""
+    nearest_posdef(A::AbstractMatrix; tol=eps())
+
+Computes the nearest Hermitian positive semidefinite matrix
+to `A` in the Frobenius norm, according to [1].
+The value of `tol` will be the smallest eigenvalue of the returned matrix.
+
+References
+==========
+[1] : "Computing a nearest symmetric positive semidefinite matrix" - N. J. Higham (1988)
+      https://doi.org/10.1016/0024-3795(88)90223-6
+"""
+function nearest_posdef(A::AbstractMatrix; tol=eps())
+    # Take Hermitian part of B
+    B = 0.5(A + A')
+
+    vals, vecs = eigen(Hermitian(B))
+
+    # Patch negative eigenvalues
+    vals = max.(vals, tol)
+
+    # Re-compose patched matrix
+    B = vecs * Diagonal(vals) * vecs'
+
+    # Positive definite is a subset of Hermitian matrices
+    return Hermitian(B)
+end
+
+"""
+    nearest_density(A::AbstractMatrix; tol=eps())
+
+Computes the nearest density matrix to `A` in the Frobenius norm
+by first computing the nearest positive definite matrix with [`nearest_posdef`](@ref)
+and then trace-normalizing the result.
+"""
+function nearest_density(A::AbstractMatrix; tol=eps())
+    B = nearest_posdef(A; tol=tol)
+
+    return B / tr(B)
+end
+
 
 """
     ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
