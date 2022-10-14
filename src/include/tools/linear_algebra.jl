@@ -84,6 +84,26 @@ Examples
 =======
 
 ```julia-repl
+julia> using LinearAlgebra: kron # Kronecker product
+
+julia> state1 = random_density(3); #  3x3 density matrix
+
+julia> state2 = random_density(4); #  4x4 density matrix
+
+julia> full_state = kron(state1, state2);
+
+julia> reduced1 = ptrace(full_state, (3, 4), 2); # Trace second subspace
+
+julia> reduced2 = ptrace(full_state, (3, 4), 1); # Trace first subspace
+
+julia> isapprox(reduced1, state1)
+true
+
+julia> isapprox(reduced2, state2)
+true
+```
+
+```julia-repl
 julia> A = reshape(1:16, 4, 4)[:, :]
 4×4 Matrix{Int64}:
  1  5   9  13
