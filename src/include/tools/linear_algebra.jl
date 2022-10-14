@@ -84,6 +84,26 @@ Examples
 =======
 
 ```julia-repl
+julia> using LinearAlgebra: kron # Kronecker product
+
+julia> state1 = random_density(3); #  3x3 density matrix
+
+julia> state2 = random_density(4); #  4x4 density matrix
+
+julia> full_state = kron(state1, state2);
+
+julia> reduced1 = ptrace(full_state, (3, 4), 2); # Trace second subspace
+
+julia> reduced2 = ptrace(full_state, (3, 4), 1); # Trace first subspace
+
+julia> isapprox(reduced1, state1)
+true
+
+julia> isapprox(reduced2, state2)
+true
+```
+
+```julia-repl
 julia> A = reshape(1:16, 4, 4)[:, :]
 4×4 Matrix{Int64}:
  1  5   9  13
@@ -93,13 +113,13 @@ julia> A = reshape(1:16, 4, 4)[:, :]
 
 julia> ptrace(A, (2,2), 1) # Trace over the first subsystem
 2×2 Matrix{Int64}:
-  7  23
- 11  27
+ 12  20
+ 14  22
 
 julia> ptrace(A, (2,2), 2) # Trace over the second subsystem
 2×2 Matrix{Int64}:
- 12  20
- 14  22
+  7  23
+ 11  27
 
 julia> ptrace(A, (2,2), (1,2)) # Trace over both subsystems
 1×1 Matrix{Int64}:
@@ -107,16 +127,18 @@ julia> ptrace(A, (2,2), (1,2)) # Trace over both subsystems
 ```
 """
 function ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
-    @assert prod(subsystem_sizes)==size(M, 1) "Matrix does not comply with the system sizes"
-    @assert issquared(M) "Matrix is not squared"
+    issquared(M) || throw("Matrix is not squared")
+    prod(subsystem_sizes)==size(M, 1) || throw("Matrix size does not comply with the subsystem sizes")
 
     # Separate the subsystems of M by axes
-    T = reshape(M, subsystem_sizes..., subsystem_sizes...)
+    rev_subsystem_sizes = reverse(subsystem_sizes)
+    T = reshape(M, rev_subsystem_sizes..., rev_subsystem_sizes...)
 
     # Iterate tracing over each subsystem
     Nsys = length(subsystem_sizes)
-    for system in trace_over
-        T = mapslices(tr, T, dims=(system, system+Nsys))
+    for subsystem in trace_over
+        dim = Nsys - subsystem + 1
+        T = mapslices(tr, T, dims=(dim, Nsys + dim))
     end
 
     # Compute size of the traced matrix
