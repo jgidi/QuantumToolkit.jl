@@ -93,13 +93,13 @@ julia> A = reshape(1:16, 4, 4)[:, :]
 
 julia> ptrace(A, (2,2), 1) # Trace over the first subsystem
 2×2 Matrix{Int64}:
-  7  23
- 11  27
+ 12  20
+ 14  22
 
 julia> ptrace(A, (2,2), 2) # Trace over the second subsystem
 2×2 Matrix{Int64}:
- 12  20
- 14  22
+  7  23
+ 11  27
 
 julia> ptrace(A, (2,2), (1,2)) # Trace over both subsystems
 1×1 Matrix{Int64}:
