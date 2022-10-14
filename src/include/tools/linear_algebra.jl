@@ -127,8 +127,8 @@ julia> ptrace(A, (2,2), (1,2)) # Trace over both subsystems
 ```
 """
 function ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
-    @assert prod(subsystem_sizes)==size(M, 1) "Matrix does not comply with the system sizes"
-    @assert issquared(M) "Matrix is not squared"
+    issquared(M) || throw("Matrix is not squared")
+    prod(subsystem_sizes)==size(M, 1) || throw("Matrix size does not comply with the subsystem sizes")
 
     # Separate the subsystems of M by axes
     rev_subsystem_sizes = reverse(subsystem_sizes)
