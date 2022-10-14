@@ -111,12 +111,14 @@ function ptrace(M::AbstractMatrix, subsystem_sizes, trace_over)
     @assert issquared(M) "Matrix is not squared"
 
     # Separate the subsystems of M by axes
-    T = reshape(M, subsystem_sizes..., subsystem_sizes...)
+    rev_subsystem_sizes = reverse(subsystem_sizes)
+    T = reshape(M, rev_subsystem_sizes..., rev_subsystem_sizes...)
 
     # Iterate tracing over each subsystem
     Nsys = length(subsystem_sizes)
-    for system in trace_over
-        T = mapslices(tr, T, dims=(system, system+Nsys))
+    for subsystem in trace_over
+        dim = Nsys - subsystem + 1
+        T = mapslices(tr, T, dims=(dim, Nsys + dim))
     end
 
     # Compute size of the traced matrix
