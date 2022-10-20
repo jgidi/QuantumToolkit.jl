@@ -1,7 +1,7 @@
 name = "QuantumToolkit"
 uuid = "32e8ab88-263e-4e37-9328-2525dc559f8f"
 authors = ["Jorge Gidi <jorgegidi@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
