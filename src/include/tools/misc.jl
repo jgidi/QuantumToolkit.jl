@@ -1,4 +1,5 @@
 export squeeze, logrange, bound
+export bloch_vector, bloch_angles, qubit_from_angles
 
 """
     squeeze(A::AbstractArray)
@@ -63,6 +64,12 @@ function bound(value, limits = (zero(value), one(value)))
 end
 
 
+"""
+    bloch_angles(ket::AbstractVector)
+
+Returns the angles `theta` and `phi` defining the position of the pure state
+`ket` on the Bloch sphere.
+"""
 function bloch_angles(ket::AbstractVector)
     isstate(ket)   || throw("Input is not a valid physical state")
     length(ket)==2 || throw("Bloch sphere is only defined for d=2")
@@ -75,10 +82,21 @@ function bloch_angles(ket::AbstractVector)
     return theta, phi
 end
 
-export bloch_vector, bloch_angles
 
+"""
+    bloch_vector(ket::AbstractVector)
+
+Returns the Bloch vector defining the position of the pure state
+`ket` on the Bloch sphere.
+"""
 bloch_vector(ket::AbstractVector) = bloch_vector(ket*ket')
 
+"""
+    bloch_vector(A::AbstractMatrix)
+
+Returns the Bloch vector defining the position of the density state
+`A` on the Bloch ball.
+"""
 function bloch_vector(A::AbstractMatrix)
     size(A, 1)==2 || throw("Bloch sphere is only defined for d=2")
     # isstate(A)    || throw("Input is not a valid physical state.")
@@ -86,4 +104,23 @@ function bloch_vector(A::AbstractMatrix)
     mz = real(A[1, 1] - A[2,2])
 
     return (mx, my, mz)
+end
+
+
+"""
+    qubit_from_angles(theta::Real, phi::Real, global_phase::Real=0.0)
+
+Returns the 2-level ket state defined by the two angles, `theta` and `phi`
+on the Bloch sphere.
+"""
+function qubit_from_angles(theta::Real, phi::Real, global_phase::Real=0.0)
+    a = cos(0.5theta)
+    b = cis(phi)*sqrt(1 - a^2)
+
+    qubit = [a, b]
+    if !iszero(global_phase)
+        qubit .*= cis(global_phase)
+    end
+
+    return qubit
 end
