@@ -63,6 +63,12 @@ function bound(value, limits = (zero(value), one(value)))
 end
 
 
+"""
+    bloch_angles(ket::AbstractVector)
+
+Returns the angles `theta` and `phi` defining the position of the pure state
+`ket` on the Bloch sphere.
+"""
 function bloch_angles(ket::AbstractVector)
     isstate(ket)   || throw("Input is not a valid physical state")
     length(ket)==2 || throw("Bloch sphere is only defined for d=2")
