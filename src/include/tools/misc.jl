@@ -83,8 +83,20 @@ end
 
 export bloch_vector, bloch_angles
 
+"""
+    bloch_vector(ket::AbstractVector)
+
+Returns the Bloch vector defining the position of the pure state
+`ket` on the Bloch sphere.
+"""
 bloch_vector(ket::AbstractVector) = bloch_vector(ket*ket')
 
+"""
+    bloch_vector(A::AbstractMatrix)
+
+Returns the Bloch vector defining the position of the density state
+`A` on the Bloch ball.
+"""
 function bloch_vector(A::AbstractMatrix)
     size(A, 1)==2 || throw("Bloch sphere is only defined for d=2")
     # isstate(A)    || throw("Input is not a valid physical state.")
