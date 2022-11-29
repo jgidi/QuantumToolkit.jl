@@ -1,4 +1,5 @@
 export squeeze, logrange, bound
+export bloch_vector, bloch_angles, qubit_from_angles
 
 """
     squeeze(A::AbstractArray)
@@ -81,7 +82,6 @@ function bloch_angles(ket::AbstractVector)
     return theta, phi
 end
 
-export bloch_vector, bloch_angles
 
 """
     bloch_vector(ket::AbstractVector)
