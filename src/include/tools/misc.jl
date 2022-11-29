@@ -105,3 +105,22 @@ function bloch_vector(A::AbstractMatrix)
 
     return (mx, my, mz)
 end
+
+
+"""
+    qubit_from_angles(theta::Real, phi::Real, global_phase::Real=0.0)
+
+Returns the 2-level ket state defined by the two angles, `theta` and `phi`
+on the Bloch sphere.
+"""
+function qubit_from_angles(theta::Real, phi::Real, global_phase::Real=0.0)
+    a = cos(0.5theta)
+    b = cis(phi)*sqrt(1 - a^2)
+
+    qubit = [a, b]
+    if !iszero(global_phase)
+        qubit .*= cis(global_phase)
+    end
+
+    return qubit
+end
