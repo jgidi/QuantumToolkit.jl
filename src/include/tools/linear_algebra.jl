@@ -1,4 +1,37 @@
+export commutator, commutator!
 export trn, issemiposdef, nearest_posdef, nearest_density, ptrace
+
+
+"""
+    commutator!(C::AbstractMatrix, A::AbstractMatrix, B::AbstractMatrix)
+
+Computes the commutator `[A, B] = AB - BA` of the operators `A` and `B`,
+and save it in place on `C`.
+
+For an allocating version of this function see [`commutator`](@ref).
+"""
+function commutator!(C::AbstractMatrix, A::AbstractMatrix, B::AbstractMatrix)
+    mul!(C, A, B)
+    mul!(C, B, A, -1, 1)
+
+    return C
+end
+
+"""
+    commutator(A::AbstractMatrix, B::AbstractMatrix)
+
+Returns the commutator `[A, B] = AB - BA` of the operators `A` and `B`.
+
+For an in-place version of this function see [`commutator!`](@ref).
+"""
+function commutator(A::AbstractMatrix, B::AbstractMatrix)
+    T = promote_type(typeof(A), typeof(B))
+    C = similar(T, size(A))
+    commutator!(C, A, B)
+
+    return C
+end
+
 
 """
     trn(A::AbstractMatrx)
